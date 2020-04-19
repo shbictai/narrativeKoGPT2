@@ -4,7 +4,7 @@ import torch
 def beamSearch():
   None
 
-def randomSearch(predict, k, vocab):
+def topkSampling(predict, k, vocab):
   # topk 중 랜덤으로 선택된 값을 반환.
   gen =[]
 
