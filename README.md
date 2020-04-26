@@ -16,7 +16,7 @@ Colab GPU: Tesla P100
 ###  colab
  
 ## 3. 인원 
-kkr, shb-ict
+kkr, ksh, ujy
 ## 4. 라이센스
 `modified MIT`라이센스
 ## 5. 참조
