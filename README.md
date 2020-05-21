@@ -5,7 +5,7 @@ SHB NLP 스터디 1차.
 [SKT-AI의 KoGPT2](https://github.com/SKT-AI/KoGPT2)와 pytorch를 이용해 소설을 생성하는 GPT-2 모델.
 GPT-2에 대해 학습하고, 문장 생성을 통해 Transformer와 GPT, Language Model에 대한 이해를 목표.
   
-기본 KoGPT-2 위에 학습데이터를 이용하여, 학습을 시켰고 우리의 경우 인터넷 소설과 동화를 이용하여 학습 후 문장 생성. 
+기본 KoGPT-2 위에 학습데이터를 이용하여 학습. 우리의 경우 인터넷 소설과 동화를 이용하여 학습 후 문장 생성 테스트. 
 NarrativeKoGPT2로 명명했지만 사용자가 원하는 데이터로 전처리 후 학습 한다면 다양한 응용 가능.
 
 ### 1. 데이터
