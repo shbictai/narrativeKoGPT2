@@ -101,5 +101,5 @@ Kyungri , Seonghwan, Jungyun
 ## 6. 라이센스
 `modified MIT`라이센스
 ## 7. 참조
-[SKT-AI/KoGPT2](https://github.com/SKT-AI/KoGPT2)  
-[likejazz/korean-sentence-splitter](https://github.com/likejazz/korean-sentence-splitter)
+- [SKT-AI/KoGPT2](https://github.com/SKT-AI/KoGPT2)    
+- [likejazz/korean-sentence-splitter](https://github.com/likejazz/korean-sentence-splitter)
