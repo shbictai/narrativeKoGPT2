@@ -94,12 +94,12 @@ python, pytorch
 “하느님이 세 마녀를 쓰시어 왕국을 차 버리셨소. 거기 들어가셔서 지금 뭐하고 계신지 잘 보시구려.” 그녀가 다가가 머리를  숙여 보여드리니 왕은 놀라며 소리쳤어요.
 ```
 ## 4. 인원 
-김경리, 김성환, 엄정윤
+Kyungri , Seonghwan, Jungyun
 
 ## 5. 기간
 2020-03 ~ 2020-04
 ## 6. 라이센스
 `modified MIT`라이센스
 ## 7. 참조
-[SKT-AI/KoGPT2](https://github.com/SKT-AI/KoGPT2)
+[SKT-AI/KoGPT2](https://github.com/SKT-AI/KoGPT2)  
 [likejazz/korean-sentence-splitter](https://github.com/likejazz/korean-sentence-splitter)
