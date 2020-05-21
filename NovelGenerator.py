@@ -5,16 +5,19 @@ from gluonnlp.data import SentencepieceTokenizer
 from kogpt2.utils import get_tokenizer
 from kogpt2.utils import download, tokenizer
 from model.torch_gpt2 import GPT2Config, GPT2LMHeadModel
-from util.data import NovelDataset
+# from util.data import NovelDataset
 import gluonnlp
-import search
+import sampling
+import kss
 
 ### 1. koGPT2 Config
 ctx= 'cpu'#'cuda' #'cpu' #학습 Device CPU or GPU. colab의 경우 GPU 사용
 cachedir='~/kogpt2/' # KoGPT-2 모델 다운로드 경로
 epoch =200  # 학습 epoch
 save_path = './checkpoint'
-load_path = './checkpoint/checkpoint_0.tar'
+load_path = 'checkpoint/checkpoint_0_epoch_134.tar'
+load_path_fairy_tale = 'checkpoint/fairy_tale_checkpoint_epoch_98.tar'
+
 #use_cuda = True # Colab내 GPU 사용을 위한 값
 
 pytorch_kogpt2 = {
@@ -46,7 +49,7 @@ vocab_path = download(vocab_info['url'],
 # Device 설정
 device = torch.device(ctx)
 # 저장한 Checkpoint 불러오기
-checkpoint = torch.load(load_path, map_location=device)
+checkpoint = torch.load(load_path_fairy_tale, map_location=device)
 
 # KoGPT-2 언어 모델 학습을 위한 GPT2LMHeadModel 선언
 kogpt2model = GPT2LMHeadModel(config=GPT2Config.from_dict(kogpt2_config))
@@ -67,47 +70,31 @@ model, vocab = kogpt2model, vocab_b_obj
 tok = SentencepieceTokenizer(tok_path)
 
 ### 5. Text Generation
-sent =''
+sent = input('문장 입력: ')
+
+toked = tok(sent)
+count = 0
+output_size = 200 # 출력하고자 하는 토큰 갯수
+
 while 1:
+  input_ids = torch.tensor([vocab[vocab.bos_token],]  + vocab[toked]).unsqueeze(0)
+  predicts = model(input_ids)
+  pred = predicts[0]
 
-  tmp_sent = input('다음...: ')
-  sent = sent+tmp_sent
+  last_pred = pred.squeeze()[-1]
+  # top_p 샘플링 방법
+  # sampling.py를 통해 random, top-k, top-p 선택 가능.
+  gen = sampling.top_p(last_pred, vocab, 0.85)
 
-  toked = tok(sent)
-  count = 0
-  generated_text =''
-  input_size = 50
-
-  if len(toked) >1022:
-    break
-
-  while 1:
-    input_ids = torch.tensor([vocab[vocab.bos_token],]  + vocab[toked]).unsqueeze(0)
-    predicts = model(input_ids)
-    pred = predicts[0]
-    # print('predicts:', torch.argmax(pred, axis=-1).squeeze())
-    gen = vocab.to_tokens(torch.argmax(pred, axis=-1).squeeze().tolist())[-1]
-
-    search.randomSearch(pred, 5, vocab)
-    if gen == '</s>':
-      print('to_tokens:',vocab.to_tokens(torch.argmax(pred, axis=-1).squeeze().tolist()))
-    if gen == '.' or count>input_size:
-      sent += gen.replace('▁', ' ')
-      generated_text += gen.replace('▁', ' ')
-      sent += '\n'
-      generated_text += '\n'
-      toked = tok(sent)
-      count =0
-      break
-      # print('to_tokens:',vocab.to_tokens(torch.argmax(pred, axis=-1).squeeze().tolist()))
-    # if count >= input_size:
-    #   break
+  if count>output_size:
     sent += gen.replace('▁', ' ')
-    generated_text += gen.replace('▁', ' ')
-    # print(generated_text)
-
     toked = tok(sent)
-    count += 1
-  print(generated_text)
-  generated_text=''
-print(sent)
+    count =0
+    break
+  sent += gen.replace('▁', ' ')
+  toked = tok(sent)
+  count += 1
+
+for s in kss.split_sentences(sent):
+    print(s)
+

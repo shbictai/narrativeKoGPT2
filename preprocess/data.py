@@ -1,19 +1,13 @@
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-
 from NarrativeKoGPT2.util.data import sentencePieceTokenizer, toString
-from torch.utils.data import TensorDataset # 텐서데이터셋
-from torch.utils.data import Dataset,DataLoader # 데이터로더
 
 def makeDataUnderMaxTokenLen():
   # tokenizer
   sentencepieceTokenizer= sentencePieceTokenizer()
 
   # Files for read and write
-  file = open('../data/backmyo_novel_1/prerpcessed_bm_novel_utf8_3.txt', 'r', encoding='utf-8')
-  untokenized_file = open('../data/backmyo_novel_1/untokenized_bm_data.txt', 'w', encoding='utf-8')
-  tokenized_file = open('../data/backmyo_novel_1/tokenized_bm_data.txt', 'w', encoding='utf-8')
+  file = open('../data/bm_novel_1/prerpcessed_bm_novel_utf8_3.txt', 'r', encoding='utf-8')
+  untokenized_file = open('../data/bm_novel_1/untokenized_bm_data.txt', 'w', encoding='utf-8')
+  tokenized_file = open('../data/bm_novel_1/tokenized_bm_data.txt', 'w', encoding='utf-8')
 
   # Data for saving that will use on training
   untokenized = ""
@@ -52,7 +46,7 @@ def makeDataUnderMaxTokenLen():
   tokenized_file.close()
 
 
-def getBatchData(batch_size, file_path, tokenizer, vocab):
+def getBatchData(file_path, tokenizer, vocab):
 
   file = open(file_path, 'r', encoding='utf-8')
   while True:
