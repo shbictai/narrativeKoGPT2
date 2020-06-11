@@ -17,6 +17,7 @@ epoch =200  # 학습 epoch
 save_path = './checkpoint'
 load_path = 'checkpoint/checkpoint_0_epoch_134.tar'
 load_path_fairy_tale = 'checkpoint/fairy_tale_checkpoint_epoch_98.tar'
+load_path_moli_sim = 'checkpoint/moli_sim_question_checkpoint.tar'
 
 #use_cuda = True # Colab내 GPU 사용을 위한 값
 
@@ -49,7 +50,7 @@ vocab_path = download(vocab_info['url'],
 # Device 설정
 device = torch.device(ctx)
 # 저장한 Checkpoint 불러오기
-checkpoint = torch.load(load_path, map_location=device)
+checkpoint = torch.load(load_path_moli_sim, map_location=device)
 
 # KoGPT-2 언어 모델 학습을 위한 GPT2LMHeadModel 선언
 kogpt2model = GPT2LMHeadModel(config=GPT2Config.from_dict(kogpt2_config))
@@ -84,7 +85,8 @@ while 1:
   last_pred = pred.squeeze()[-1]
   # top_p 샘플링 방법
   # sampling.py를 통해 random, top-k, top-p 선택 가능.
-  gen = sampling.top_p(last_pred, vocab, 0.75)
+  # gen = sampling.top_p(last_pred, vocab, 0.98)
+  gen = sampling.top_k(last_pred, vocab, 5)
 
   if count>output_size:
     sent += gen.replace('▁', ' ')
